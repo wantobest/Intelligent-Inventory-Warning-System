@@ -1,0 +1,45 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+<mapper namespace="com.example.inventoryalert.mapper.InventoryMapper">
+    <select id="selectAll" resultType="Inventory">
+        SELECT 
+            id,
+            product_name AS productName,
+            stock_quantity AS stockQuantity,
+            min_stock AS minStock,
+            max_stock AS maxStock,
+            update_time AS updateTime
+        FROM inventory
+    </select>
+    
+    <select id="selectById" resultType="Inventory" parameterType="Long">
+        SELECT 
+            id,
+            product_name AS productName,
+            stock_quantity AS stockQuantity,
+            min_stock AS minStock,
+            max_stock AS maxStock,
+            update_time AS updateTime
+        FROM inventory WHERE id = #{id}
+    </select>
+    
+    <update id="updateStock">
+        UPDATE inventory 
+        SET stock_quantity = #{quantity},
+            update_time = NOW()
+        WHERE id = #{id}
+    </update>
+    
+    <select id="selectLowStockItems" resultType="Inventory">
+        SELECT * FROM inventory WHERE stock_quantity &lt; min_stock
+    </select>
+    
+    <insert id="insert" parameterType="Inventory">
+        INSERT INTO inventory(product_name, stock_quantity, min_stock, max_stock)
+        VALUES(#{productName}, #{stockQuantity}, #{minStock}, #{maxStock})
+    </insert>
+    
+    <delete id="deleteById" parameterType="Long">
+        DELETE FROM inventory WHERE id = #{id}
+    </delete>
+</mapper>

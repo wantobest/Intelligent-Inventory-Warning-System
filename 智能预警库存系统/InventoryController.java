@@ -1,0 +1,1 @@
+@PutMapping("/items/{id}/stock")
